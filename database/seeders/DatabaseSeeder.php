@@ -15,11 +15,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name' => 'Admin User',
+            'email' => 'admin@admin.com',
+        ]);
+
+        \App\Models\Product::insert([
+            ['name' => 'Product A', 'description' => 'Description for Product A', 'price' => 150.00, 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Product B', 'description' => 'Description for Product B', 'price' => 200.00, 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Product C', 'description' => 'Description for Product C', 'price' => 50.00, 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Product D', 'description' => 'Description for Product D', 'price' => 300.00, 'created_at' => now(), 'updated_at' => now()],
         ]);
     }
 }
