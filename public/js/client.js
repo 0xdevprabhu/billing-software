@@ -110,7 +110,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         items.forEach((product, index) => {
             const card = document.createElement('div');
-            card.className = 'product-card';
+            const cartItem = cart.find(item => item.product_id === product.id);
+            const isInCart = !!cartItem;
+            
+            card.className = `product-card ${isInCart ? 'in-cart' : ''}`;
+            card.setAttribute('data-product-id', product.id);
             
             // Random icon based on product id
             const iconClass = icons[(product.id || index) % icons.length];
@@ -125,6 +129,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         <button class="primary-btn add-to-cart-btn" data-id="${product.id}">
                             <i class="fa-solid fa-cart-plus"></i> Add
                         </button>
+                        <div class="card-qty-controls" data-id="${product.id}">
+                            <button class="card-qty-btn card-minus-qty"><i class="fa-solid fa-minus"></i></button>
+                            <span class="card-item-qty">${isInCart ? cartItem.quantity : 0}</span>
+                            <button class="card-qty-btn card-plus-qty"><i class="fa-solid fa-plus"></i></button>
+                        </div>
                     </div>
                 </div>
             `;
@@ -137,6 +146,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 const btnEle = e.target.closest('.add-to-cart-btn');
                 const productId = parseInt(btnEle.getAttribute('data-id'));
                 addToCart(productId);
+            });
+        });
+
+        // Plus/Minus on cards
+        document.querySelectorAll('.card-plus-qty').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const controls = e.target.closest('.card-qty-controls');
+                const productId = parseInt(controls.getAttribute('data-id'));
+                addToCart(productId); // Increment
+            });
+        });
+
+        document.querySelectorAll('.card-minus-qty').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const controls = e.target.closest('.card-qty-controls');
+                const productId = parseInt(controls.getAttribute('data-id'));
+                const cartIndex = cart.findIndex(item => item.product_id === productId);
+                if(cartIndex !== -1) {
+                    updateQty(cartIndex, -1);
+                }
             });
         });
     }
@@ -225,6 +254,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             });
         }
+
+        // SYNC PRODUCT CARDS UI
+        document.querySelectorAll('.product-card').forEach(card => {
+            const productId = parseInt(card.getAttribute('data-product-id'));
+            const cartItem = cart.find(item => item.product_id === productId);
+            const qtySpan = card.querySelector('.card-item-qty');
+            
+            if(cartItem) {
+                card.classList.add('in-cart');
+                if(qtySpan) qtySpan.innerText = cartItem.quantity;
+            } else {
+                card.classList.remove('in-cart');
+                if(qtySpan) qtySpan.innerText = 0;
+            }
+        });
     }
 
     function updateQty(index, change) {

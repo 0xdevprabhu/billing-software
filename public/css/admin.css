@@ -93,6 +93,7 @@ body {
 .admin-content {
     flex-grow: 1;
     padding: 2.5rem;
+    height: 100vh;
     overflow-y: auto;
     background-color: var(--bg-color);
 }
@@ -340,7 +341,7 @@ body {
     
     /* Force visibility of the paper and its parents for the print engine */
     #create-bill-page, #create-bill-page *, 
-    #invoicePaper, #invoicePaper * { 
+    #invoicePaper, #invoicePaper *:not(.noprint):not(.noprint *) { 
         visibility: visible !important; 
     }
     
@@ -356,10 +357,15 @@ body {
         background: white !important;
     }
     
-    .sidebar, .brand, .sidebar-nav, .section-header, .bill-controls, .bill-actions, .noprint, #toastNotification {
+    .sidebar, .brand, .sidebar-nav, .section-header, .bill-controls, .bill-actions, .noprint, .noprint *, #toastNotification {
         display: none !important;
         visibility: hidden !important;
+        width: 0 !important;
+        height: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
     }
+
 
     /* Reset layouts that might interfere with print flow */
     .admin-layout, .admin-content, .bill-split-layout, .bill-preview-wrapper {
@@ -391,4 +397,21 @@ body {
 }
 .toast.show { transform: translateY(0); opacity: 1; pointer-events: auto; }
 .toast i { color: var(--success); }
+
+/* Logout Styles */
+.sidebar-nav li.logout-item {
+    margin-top: auto;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 10px;
+    margin-bottom: 20px;
+}
+
+.logout-btn {
+    color: #f87171 !important; /* Lighter red for dark bg */
+}
+
+.logout-btn:hover {
+    background-color: rgba(239, 68, 68, 0.1) !important;
+    color: #ef4444 !important;
+}
 

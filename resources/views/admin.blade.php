@@ -22,7 +22,16 @@
                 <li><a href="#" data-target="manage-orders-page" class="admin-nav-btn"><i class="fa-solid fa-cart-shopping"></i> Online Orders</a></li>
                 <li><a href="#" data-target="create-bill-page" class="admin-nav-btn"><i class="fa-solid fa-file-invoice"></i> Create Bill</a></li>
                 <li><a href="#" data-target="saved-bills-page" class="admin-nav-btn"><i class="fa-solid fa-folder-open"></i> Saved Bills</a></li>
+                <li class="logout-item">
+                    <form action="{{ route('logout') }}" method="POST" id="logout-form">
+                        @csrf
+                        <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="admin-nav-btn logout-btn">
+                            <i class="fa-solid fa-right-from-bracket"></i> Logout
+                        </a>
+                    </form>
+                </li>
             </ul>
+
         </aside>
 
         <main class="admin-content">
